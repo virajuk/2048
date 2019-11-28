@@ -155,7 +155,6 @@ def merge(mat):
                 done = True
     return (mat, done)
 
-
 def up(game):
     print("up")
     # return matrix after shifting up
