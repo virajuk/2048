@@ -16,7 +16,6 @@ class GameGrid(Frame):
         self.grid()
         self.master.title('2048')
         self.master.bind("<Key>", self.key_down)
-        # self.master.bind("<Key>", self.agent_play_game)
 
         # self.gamelogic = gamelogic
         self.commands = {c.KEY_UP: logic.up, c.KEY_DOWN: logic.down,
@@ -81,15 +80,10 @@ class GameGrid(Frame):
 
     def agent_play_game(self):
 
-        # print(randrange(10))
-        # random.randint(0, 9)
-        rand_number = random.randint(0, 3)
-        # print(rand_number)
-        action = self.actions[rand_number]
-
-        self.matrix, done = self.commands[action](self.matrix)
+        self.matrix, done = self.commands[self.actions[random.randint(0, 3)]](self.matrix)
 
         if done:
+
             self.matrix = logic.add_two(self.matrix)
 
             self.history_matrixs.append(self.matrix)
