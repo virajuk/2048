@@ -1,10 +1,6 @@
 import random
 from tkinter import Frame, Label, CENTER
-# import numpy as np
 import time
-
-from random import randrange
-
 
 import logic
 import constants as c
