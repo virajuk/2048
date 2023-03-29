@@ -4,6 +4,7 @@ import time
 
 import logic
 import constants as c
+from agent import Agent
 
 
 class GameGrid(Frame):
@@ -21,12 +22,11 @@ class GameGrid(Frame):
                          c.KEY_H: logic.left, c.KEY_L: logic.right,
                          c.KEY_K: logic.up, c.KEY_J: logic.down}
 
-        self.actions = {0: "'w'", 1: "'a'", 2: "'s'", 3: "'d'"}
-
         self.grid_cells = []
         self.init_grid()
         self.init_matrix()
         self.update_grid_cells()
+        self.score = 0
 
         # self.agent_play_game()
 
@@ -71,7 +71,8 @@ class GameGrid(Frame):
 
     def agent_play_game(self):
 
-        self.matrix, done = self.commands[self.actions[random.randint(0, 3)]](self.matrix)
+        agent = Agent()
+        self.matrix, done, self.score = self.commands[agent.actions[random.randint(0, 3)]](self.matrix, self.score)
         if done:
 
             self.matrix = logic.add_two(self.matrix)
@@ -79,24 +80,25 @@ class GameGrid(Frame):
 
             self.win_or_loose()
 
-        # if logic.game_state(self.matrix) == 'not over':
-        #
-        #     time.sleep(1)
-        #     # print(logic.game_state(self.matrix))
-        #     self.agent_play_game()
+        if logic.game_state(self.matrix) == 'not over':
+
+            time.sleep(0.5)
+            # print(logic.game_state(self.matrix))
+            self.agent_play_game()
 
     def key_down(self, event):
         key = repr(event.char)
 
         if key in self.commands:
 
-            self.matrix, done = self.commands[repr(event.char)](self.matrix)
+            self.matrix, done, self.score = self.commands[repr(event.char)](self.matrix, self.score)
 
             if done:
 
                 self.matrix = logic.add_two(self.matrix)
                 self.update_grid_cells()
 
+                print(self.score)
                 self.win_or_loose()
 
     def win_or_loose(self):
@@ -116,5 +118,3 @@ class GameGrid(Frame):
 if __name__ == '__main__':
     # pass
     gamegrid = GameGrid()
-
-    print("here")
