@@ -38,3 +38,5 @@ KEY_J = "'j'"
 KEY_K = "'k'"
 KEY_L = "'l'"
 KEY_H = "'h'"
+
+KEY_Q = "'q'"

@@ -5,6 +5,7 @@ import time
 import logic
 import constants as c
 from agent import Agent
+from config import config
 
 
 class GameGrid(Frame):
@@ -20,17 +21,21 @@ class GameGrid(Frame):
                          c.KEY_UP_ALT: logic.up, c.KEY_DOWN_ALT: logic.down,
                          c.KEY_LEFT_ALT: logic.left, c.KEY_RIGHT_ALT: logic.right,
                          c.KEY_H: logic.left, c.KEY_L: logic.right,
-                         c.KEY_K: logic.up, c.KEY_J: logic.down}
+                         c.KEY_K: logic.up, c.KEY_J: logic.down
+                         }
 
         self.grid_cells = []
         self.init_grid()
         self.init_matrix()
         self.update_grid_cells()
-        self.score = 0
 
+        self.score = 0
+        self.agent = Agent()
         # self.agent_play_game()
 
-        self.mainloop()
+        # print(config.get("episodes"))
+
+        self.update_idletasks()
 
     def init_grid(self):
         background = Frame(self, bg=c.BACKGROUND_COLOR_GAME, width=c.SIZE, height=c.SIZE)
@@ -71,10 +76,18 @@ class GameGrid(Frame):
 
     def agent_play_game(self):
 
-        agent = Agent()
-        self.matrix, done, self.score = self.commands[agent.actions[random.randint(0, 3)]](self.matrix, self.score)
-        if done:
+        self.matrix, done, self.score = self.commands[self.agent.actions[random.randint(0, 3)]](self.matrix, self.score)
 
+
+
+
+        if logic.game_state(self.matrix) == 'win':
+
+            self.destroy()
+            return
+            # return self.score
+
+        if done:
             self.matrix = logic.add_two(self.matrix)
             self.update_grid_cells()
 
@@ -83,11 +96,15 @@ class GameGrid(Frame):
         if logic.game_state(self.matrix) == 'not over':
 
             time.sleep(0.5)
-            # print(logic.game_state(self.matrix))
             self.agent_play_game()
+
+        return self.score
 
     def key_down(self, event):
         key = repr(event.char)
+
+        if key == "'q'":
+            self.quit()
 
         if key in self.commands:
 
@@ -116,5 +133,10 @@ class GameGrid(Frame):
 
 
 if __name__ == '__main__':
-    # pass
-    gamegrid = GameGrid()
+
+    for i in range(0, 3):
+
+        gamegrid = GameGrid()
+        score = gamegrid.agent_play_game()
+        print(score)
+        del gamegrid

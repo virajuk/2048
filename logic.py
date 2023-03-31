@@ -59,7 +59,7 @@ def add_two(mat):
 def game_state(mat):
     for i in range(len(mat)):
         for j in range(len(mat[0])):
-            if mat[i][j] == 128:
+            if mat[i][j] == 8:
                 return 'win'
     for i in range(len(mat)-1):
         # intentionally reduced to check the row on the right and below
@@ -158,7 +158,7 @@ def merge(mat, score):
 
 
 def up(game, score):
-    print("up")
+    # print("up")
     # return matrix after shifting up
     game = transpose(game)
     game, done = cover_up(game)
@@ -171,7 +171,7 @@ def up(game, score):
 
 
 def down(game, score):
-    print("down")
+    # print("down")
     # return matrix after shifting down
     game = reverse(transpose(game))
     game, done = cover_up(game)
@@ -184,7 +184,7 @@ def down(game, score):
 
 
 def left(game, score):
-    print("left")
+    # print("left")
     # return matrix after shifting left
     game, done = cover_up(game)
     temp = merge(game, score)
@@ -195,7 +195,7 @@ def left(game, score):
 
 
 def right(game, score):
-    print("right")
+    # print("right")
     # return matrix after shifting right
     game = reverse(game)
     game, done = cover_up(game)
